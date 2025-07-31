@@ -1,46 +1,38 @@
+# .github/workflows/deploy.yml
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - main # Trigger the workflow on pushes to the main branch
-  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+      - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
-    # --- ADD THIS PERMISSIONS BLOCK ---
-    # This gives the workflow the necessary permissions to push to the gh-pages branch.
+    # This gives the default GITHUB_TOKEN the permission to push to your repository.
+    # This is required for the JamesIves/github-pages-deploy-action to work.
     permissions:
       contents: write
-    # ------------------------------------
 
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Use a more recent version of the checkout action
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
+        uses: docker/setup-buildx-action@v3 # Use a more recent version of the setup action
+      
+      # This step builds your Docker image.
+      # Create React App's build script will automatically find and use the .env file
+      # that you have committed to your repository.
+      # We have removed the entire 'build-args' section.
       - name: Build and export to directory
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5 # Use a more recent version of the build action
         with:
           context: .
-          load: true # Load the image into the local Docker daemon
-          tags: love-app:latest # Tag the image for reference
-
-          build-args: |
-            REACT_APP_API_KEY=${{ secrets.REACT_APP_API_KEY }}
-            REACT_APP_AUTH_DOMAIN=${{ secrets.REACT_APP_AUTH_DOMAIN }}
-            REACT_APP_DATABASE_URL=${{ secrets.REACT_APP_DATABASE_URL }}
-            REACT_APP_PROJECT_ID=${{ secrets.REACT_APP_PROJECT_ID }}
-            REACT_APP_STORAGE_BUCKET=${{ secrets.REACT_APP_STORAGE_BUCKET }}
-            REACT_APP_MESSAGING_SENDER_ID=${{ secrets.REACT_APP_MESSAGING_SENDER_ID }}
-            REACT_APP_APP_ID=${{ secrets.REACT_APP_APP_ID }}
-            REACT_APP_MY_EMAIL=${{ secrets.REACT_APP_MY_EMAIL }}
-            REACT_APP_HER_EMAIL=${{ secrets.REACT_APP_HER_EMAIL }}
-            REACT_APP_MEASUREMENT_ID="${{ secrets.REACT_APP_MEASUREMENT_ID }}
+          load: true
+          tags: love-app:latest
 
       - name: Create build directory
         run: mkdir -p build_output
@@ -51,8 +43,10 @@ jobs:
           docker cp temp_container:/usr/share/nginx/html/. ./build_output
           docker rm temp_container
 
+      # This step deploys the contents of 'build_output' to the 'gh-pages' branch.
+      # It will use the GITHUB_TOKEN by default because we have not specified an ssh-key.
       - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages # The branch the action should deploy to
-          folder: build_output # The folder the action should deploy
+          branch: gh-pages
+          folder: build_output
