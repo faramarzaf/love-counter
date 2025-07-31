@@ -14,7 +14,7 @@ export function useTimeManagement() {
             const month = now.getMonth() + 1;
             const day = now.getDate();
             setIsNight(hour >= 18 || hour < 6);
-            setIsBirthday(month === 8 && day === 26);
+            setIsBirthday(month === 7 && day === 31);
         };
 
         checkTime();
