@@ -15,34 +15,27 @@ export default function BizhanGreeting() {
     const [isVisible, setIsVisible] = useState(false);
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
-    // --- UPDATED TIMING LOGIC ---
+    // --- NEW, SIMPLIFIED, AND CORRECTED TIMING LOGIC ---
     useEffect(() => {
-        // This function runs one full cycle: show Bizhan, then hide him after 10 seconds.
-        const runCycle = (isFirstRun = false) => {
-            // On subsequent runs, update the message. For the first run, use the default message.
-            if (!isFirstRun) {
-                setCurrentMessageIndex(prevIndex => (prevIndex + 1) % messages.length);
-            }
+        // This interval will run every 10 seconds to decide if Bizhan
+        // should be visible or hidden.
+        const interval = setInterval(() => {
+            // Use the functional form of setState to get the most up-to-date state.
+            setIsVisible(prevIsVisible => {
+                // If he was visible, it's time to hide him.
+                if (prevIsVisible) {
+                    return false;
+                }
+                // If he was hidden, it's time to show him with a new message.
+                else {
+                    setCurrentMessageIndex(prevIndex => (prevIndex + 1) % messages.length);
+                    return true;
+                }
+            });
+        }, 10000); // The cycle repeats every 10 seconds.
 
-            // Make Bizhan slide in.
-            setIsVisible(true);
-
-            // Set a timer to make him slide out after 10 seconds.
-            setTimeout(() => {
-                setIsVisible(false);
-            }, 10000); // On screen for 10 seconds (10,000ms)
-        };
-
-        // 1. Initial appearance: Wait 2 seconds, then run the first cycle.
-        const initialTimeout = setTimeout(() => runCycle(true), 2000);
-
-        const mainInterval = setInterval(() => runCycle(false), 10000);
-
-        // 3. Cleanup function to prevent errors.
-        return () => {
-            clearTimeout(initialTimeout);
-            clearInterval(mainInterval);
-        };
+        // Cleanup function to stop the timer when the component is unmounted.
+        return () => clearInterval(interval);
     }, []); // The empty [] ensures this effect runs only once.
 
     return (
