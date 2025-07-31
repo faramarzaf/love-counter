@@ -36,8 +36,7 @@ export default function BizhanGreeting() {
         // 1. Initial appearance: Wait 2 seconds, then run the first cycle.
         const initialTimeout = setTimeout(() => runCycle(true), 2000);
 
-        // 2. Recurring cycle: Every 60 seconds, start a new cycle.
-        const mainInterval = setInterval(() => runCycle(false), 60000); // 1 minute
+        const mainInterval = setInterval(() => runCycle(false), 10000);
 
         // 3. Cleanup function to prevent errors.
         return () => {
