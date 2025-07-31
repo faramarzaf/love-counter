@@ -1,5 +1,5 @@
 // src/components/BizhanGreeting.js
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ReactComponent as BizhanSVG} from '../assets/bizhan.svg';
 
 const messages = [
@@ -15,28 +15,43 @@ export default function BizhanGreeting() {
     const [isVisible, setIsVisible] = useState(false);
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
-    // --- NEW, SIMPLIFIED, AND CORRECTED TIMING LOGIC ---
+    // --- NEW AND FINAL TIMING LOGIC ---
     useEffect(() => {
-        // This interval will run every 10 seconds to decide if Bizhan
-        // should be visible or hidden.
-        const interval = setInterval(() => {
-            // Use the functional form of setState to get the most up-to-date state.
-            setIsVisible(prevIsVisible => {
-                // If he was visible, it's time to hide him.
-                if (prevIsVisible) {
-                    return false;
-                }
-                // If he was hidden, it's time to show him with a new message.
-                else {
-                    setCurrentMessageIndex(prevIndex => (prevIndex + 1) % messages.length);
-                    return true;
-                }
-            });
-        }, 10000); // The cycle repeats every 10 seconds.
+        // This will hold the main timer for the recurring cycle.
+        let mainInterval;
 
-        // Cleanup function to stop the timer when the component is unmounted.
-        return () => clearInterval(interval);
-    }, []); // The empty [] ensures this effect runs only once.
+        // 1. Initial Appearance: After 2 seconds, show Bizhan for the first time.
+        const initialTimeout = setTimeout(() => {
+            setIsVisible(true); // Show Bizhan
+
+            // After he is visible, set another timer to hide him after 10 seconds.
+            setTimeout(() => {
+                setIsVisible(false);
+            }, 10000); // On screen for 10 seconds
+
+            // 2. Start the Recurring Cycle *after* the first appearance is done.
+            // This interval will start 20 seconds after the first appearance (10s on + 10s off).
+            mainInterval = setInterval(() => {
+                // Update to the next message *before* showing him again.
+                setCurrentMessageIndex(prevIndex => (prevIndex + 1) % messages.length);
+
+                // Make him visible.
+                setIsVisible(true);
+
+                // Set a timer to hide him again after 10 seconds.
+                setTimeout(() => {
+                    setIsVisible(false);
+                }, 10000); // On screen for 10 seconds
+            }, 20000); // The full cycle (10s on + 10s off) is 20 seconds.
+
+        }, 2000); // Initial 2-second delay
+
+        // 3. Cleanup Function: This is crucial to stop all timers when the component unmounts.
+        return () => {
+            clearTimeout(initialTimeout);
+            clearInterval(mainInterval);
+        };
+    }, []); // The empty [] dependency array ensures this effect runs only once.
 
     return (
         <div className={`bizhan-container ${isVisible ? 'bizhan-visible' : 'bizhan-hidden'}`}>
