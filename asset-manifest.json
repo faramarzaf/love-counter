@@ -1,20 +1,21 @@
 {
   "files": {
-    "main.css": "/love-counter/static/css/main.6ecaba22.css",
-    "main.js": "/love-counter/static/js/main.8370f6f3.js",
+    "main.css": "/love-counter/static/css/main.19dc1f5a.css",
+    "main.js": "/love-counter/static/js/main.cb4c1c0c.js",
     "static/js/453.1a16ed4e.chunk.js": "/love-counter/static/js/453.1a16ed4e.chunk.js",
     "static/media/birthday-song.mp3": "/love-counter/static/media/birthday-song.1e6b1ffb7c6953f4548d.mp3",
     "static/media/night-ambient.mp3": "/love-counter/static/media/night-ambient.971549e43d9b7c38a7c1.mp3",
     "static/media/day-ambient.mp3": "/love-counter/static/media/day-ambient.0364b237309e1cbdf4d3.mp3",
     "static/media/faramarz.svg": "/love-counter/static/media/faramarz.d8e01c41c3a1ed28ee770d5028d375ab.svg",
     "static/media/sepideh.svg": "/love-counter/static/media/sepideh.502a6b036f5d0064c377e2eae1d7bf95.svg",
+    "static/media/bizhan.svg": "/love-counter/static/media/bizhan.61af639e918c437893a42c0210947f0e.svg",
     "index.html": "/love-counter/index.html",
-    "main.6ecaba22.css.map": "/love-counter/static/css/main.6ecaba22.css.map",
-    "main.8370f6f3.js.map": "/love-counter/static/js/main.8370f6f3.js.map",
+    "main.19dc1f5a.css.map": "/love-counter/static/css/main.19dc1f5a.css.map",
+    "main.cb4c1c0c.js.map": "/love-counter/static/js/main.cb4c1c0c.js.map",
     "453.1a16ed4e.chunk.js.map": "/love-counter/static/js/453.1a16ed4e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6ecaba22.css",
-    "static/js/main.8370f6f3.js"
+    "static/css/main.19dc1f5a.css",
+    "static/js/main.cb4c1c0c.js"
   ]
 }
