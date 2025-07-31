@@ -2,7 +2,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {signOut} from '../firebase';
 import {useTimeManagement} from '../useTimeManagement';
-import {useDatabase, useNotes} from '../useDatabase'; // We will create this next
+import {useDatabase, useNotes} from '../useDatabase';
 import Character from '../Character';
 import MemoryJar from '../MemoryJar';
 import {ReactComponent as FaramarzSVG} from "../assets/faramarz.svg";
@@ -10,6 +10,7 @@ import {ReactComponent as SepidehSVG} from "../assets/sepideh.svg";
 import birthdaySong from '../assets/birthday-song.mp3';
 import dayAmbientSound from '../assets/day-ambient.mp3';
 import nightAmbientSound from '../assets/night-ambient.mp3';
+import BizhanGreeting from './BizhanGreeting';
 
 // Custom hook for Audio Management
 function useAppAudio(isSpecialBirthday, isNight, userHasInteracted) {
@@ -75,7 +76,7 @@ function useAppAudio(isSpecialBirthday, isNight, userHasInteracted) {
 export default function MainContent({user, auth, isNight, isSpecialBirthday, userHasInteracted}) {
     const {daysTogetherCount} = useTimeManagement();
     const {countF, countS, lastLove, handleClickF, handleClickS} = useDatabase(user);
-    const {notes, handleAddNote} = useNotes(user);
+    const {notes, handleAddNote, markNotesAsRead, unreadCount, lastOpened} = useNotes(user);
 
     const [currentLoveNote, setCurrentLoveNote] = useState(0);
     const [isJarOpen, setIsJarOpen] = useState(false);
@@ -83,6 +84,7 @@ export default function MainContent({user, auth, isNight, isSpecialBirthday, use
     const myEmail = process.env.REACT_APP_MY_EMAIL;
     const herEmail = process.env.REACT_APP_HER_EMAIL;
     const userEmail = user.email.toLowerCase();
+
     const isAuthorizedUser = userEmail === myEmail || userEmail === herEmail;
 
     useAppAudio(isSpecialBirthday, isNight, userHasInteracted);
@@ -100,6 +102,31 @@ export default function MainContent({user, auth, isNight, isSpecialBirthday, use
         "You make my life brighter than the sun 🌞",
         "I miss you more than the stars miss the sun 🌌",
         "You're the reason I smile for no reason 😊",
+        "Every heartbeat of mine whispers your name 💓",
+        "You are my sunshine and my moonlight 🌞🌙",
+        "If I could hug you now, I would never let go 🤗",
+        "With you, forever doesn't feel long enough 🕰️",
+        "Every moment with you is a memory I treasure 💎",
+        "Your voice is my favorite sound 🎶",
+        "You're the piece that completes my puzzle 🧩",
+        "You're not just my love, you're my home 🏠",
+        "I'd choose you over and over again ♾️",
+        "Your smile lights up my soul 🔥",
+        "My heart beats for you and only you ❤️‍🔥",
+        "Being with you is my favorite adventure 🗺️",
+        "My love for you grows stronger with every sunrise 🌅",
+        "You + Me = Perfect Equation 🧮❤️",
+        "Forever isn't enough time with you ⏰💑",
+        "My love for you is endless like the sky 🌌",
+        "You're the sweetest part of my every day 🍓💗",
+        "Just thinking of you makes me blush 😊🌹",
+        "My soul recognized you from the start 🌌",
+        "You're my love, my light, my everything 🔥",
+        "Loving you is like breathing, I just can't stop 💨💖",
+        "With every 'I miss you', there's a silent 'I love you' ❤️",
+        "No matter where I go, my heart always finds you 💘",
+        "You're my favorite notification 🔔❤️",
+        "Loving you is my favorite thing to do 💞"
     ];
 
     useEffect(() => {
@@ -235,6 +262,12 @@ export default function MainContent({user, auth, isNight, isSpecialBirthday, use
                         className="fixed bottom-8 right-8 z-30 w-16 h-16 bg-gradient-to-br from-pink-400 to-purple-500 text-white rounded-full shadow-lg flex items-center justify-center text-3xl transform hover:scale-110 transition-transform"
                     >
                         🏺
+                        {unreadCount > 0 && (
+                            <span
+                                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full text-white text-sm flex items-center justify-center border-2 border-white">
+                  {unreadCount}
+                </span>
+                        )}
                     </button>
 
                     <MemoryJar
@@ -242,11 +275,17 @@ export default function MainContent({user, auth, isNight, isSpecialBirthday, use
                         onClose={() => setIsJarOpen(false)}
                         notes={notes}
                         onAddNote={handleAddNote}
+                        markAsRead={markNotesAsRead}
                         userEmail={userEmail}
                         myEmail={myEmail}
+                        herEmail={herEmail}
+                        lastOpened={lastOpened}
                     />
                 </>
             )}
+
+            {/* --- 2. RENDER BIZHAN'S GREETING IF IT IS HER BIRTHDAY --- */}
+            {isSpecialBirthday && <BizhanGreeting/>}
         </>
     );
 }
