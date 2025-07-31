@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/love-counter/static/css/main.6ecaba22.css",
-    "main.js": "/love-counter/static/js/main.b9e95c71.js",
+    "main.js": "/love-counter/static/js/main.8370f6f3.js",
     "static/js/453.1a16ed4e.chunk.js": "/love-counter/static/js/453.1a16ed4e.chunk.js",
     "static/media/birthday-song.mp3": "/love-counter/static/media/birthday-song.1e6b1ffb7c6953f4548d.mp3",
     "static/media/night-ambient.mp3": "/love-counter/static/media/night-ambient.971549e43d9b7c38a7c1.mp3",
@@ -10,11 +10,11 @@
     "static/media/sepideh.svg": "/love-counter/static/media/sepideh.502a6b036f5d0064c377e2eae1d7bf95.svg",
     "index.html": "/love-counter/index.html",
     "main.6ecaba22.css.map": "/love-counter/static/css/main.6ecaba22.css.map",
-    "main.b9e95c71.js.map": "/love-counter/static/js/main.b9e95c71.js.map",
+    "main.8370f6f3.js.map": "/love-counter/static/js/main.8370f6f3.js.map",
     "453.1a16ed4e.chunk.js.map": "/love-counter/static/js/453.1a16ed4e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6ecaba22.css",
-    "static/js/main.b9e95c71.js"
+    "static/js/main.8370f6f3.js"
   ]
 }
